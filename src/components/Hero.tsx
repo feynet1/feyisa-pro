@@ -61,20 +61,20 @@ const Hero = () => {
           initial={reducedMotion ? false : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="flex flex-row flex-wrap gap-2 sm:gap-4 justify-center"
+          className="flex flex-nowrap gap-2 sm:gap-4 justify-center"
         >
-          <a href="#contact" className="btn-primary-cyber text-xs sm:text-sm px-3 py-2 sm:px-5 sm:py-2.5">
+          <a href="#contact" className="btn-primary-cyber text-[11px] sm:text-sm px-2.5 py-1.5 sm:px-5 sm:py-2.5 whitespace-nowrap">
             Contact Me
           </a>
-          <a href="#projects" className="btn-secondary-cyber text-xs sm:text-sm px-3 py-2 sm:px-5 sm:py-2.5">
+          <a href="#projects" className="btn-secondary-cyber text-[11px] sm:text-sm px-2.5 py-1.5 sm:px-5 sm:py-2.5 whitespace-nowrap">
             View Projects
           </a>
           <a
             href="/cv.pdf"
             download="Feyisa_Girma_CV.pdf"
-            className="btn-secondary-cyber inline-flex items-center gap-1.5 text-xs sm:text-sm px-3 py-2 sm:px-5 sm:py-2.5"
+            className="btn-secondary-cyber inline-flex items-center gap-1 text-[11px] sm:text-sm px-2.5 py-1.5 sm:px-5 sm:py-2.5 whitespace-nowrap"
           >
-            <Download size={14} />
+            <Download size={12} />
             Download CV
           </a>
         </motion.div>
