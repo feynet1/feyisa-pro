@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ExternalLink, Lock, FileText, Network, Github, Globe, X, ZoomIn } from "lucide-react";
 import campusImg from "./network-project-image/campus-network-design.png";
+import eduPlatformImg from "./web-project-image/eduplatfrom.png";
 
 interface ProjectLink {
   label: string;
@@ -76,6 +77,7 @@ const webProjects: Project[] = [
     description:
       "A full-featured online education platform with course management, student enrollment, progress tracking, and interactive content delivery.",
     tags: ["React", "Node.js", "PostgreSQL", "Full-Stack"],
+    image: eduPlatformImg,
     links: [
       { label: "GitHub", href: "https://github.com/feynet1/Smart-Education-platform", icon: "github" },
       { label: "Live Demo", href: "https://smart-education-platform-tau.vercel.app/", icon: "live" },
