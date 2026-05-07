@@ -24,8 +24,7 @@ const networkProjects: Project[] = [
       "End-to-end network infrastructure for a multi-floor hotel with VLANs, guest isolation, and centralized management. Simulated in Cisco Packet Tracer.",
     tags: ["VLANs", "DHCP", "Cisco", "Network Security"],
     links: [
-      { label: "Docs", href: "https://github.com/feynet1", icon: "docs" },
-      { label: "Topology", href: "https://github.com/feynet1", icon: "topology" },
+      { label: "GitHub", href: "https://github.com/feynet1/Hotel-network-design", icon: "github" },
     ],
   },
   {
@@ -34,8 +33,7 @@ const networkProjects: Project[] = [
       "High-availability network for a hospital environment with redundant links, segmented traffic for medical devices, and HIPAA-compliant security.",
     tags: ["HA", "Firewalls", "Routing", "Redundancy"],
     links: [
-      { label: "Docs", href: "https://github.com/feynet1", icon: "docs" },
-      { label: "Topology", href: "https://github.com/feynet1", icon: "topology" },
+      { label: "GitHub", href: "https://github.com/feynet1/Hospital-Network-Design-", icon: "github" },
     ],
   },
   {
@@ -44,8 +42,7 @@ const networkProjects: Project[] = [
       "Scalable campus-wide network supporting thousands of users across multiple buildings with inter-VLAN routing and centralized DNS/DHCP.",
     tags: ["Scalability", "DNS", "Switching", "Design"],
     links: [
-      { label: "Docs", href: "https://github.com/feynet1", icon: "docs" },
-      { label: "Topology", href: "https://github.com/feynet1", icon: "topology" },
+      { label: "GitHub", href: "https://github.com/feynet1/Campus-Network-Design", icon: "github" },
     ],
   },
   {
