@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ExternalLink, Lock, FileText, Network, Github, Globe } from "lucide-react";
+import campusImg from "./network-project-image/campus-network-design.png";
 
 interface ProjectLink {
   label: string;
@@ -14,6 +15,7 @@ interface Project {
   tags: string[];
   status?: "live" | "upcoming";
   links?: ProjectLink[];
+  image?: string;
 }
 
 // ── Network Projects ──────────────────────────────────────────────────────────
@@ -41,6 +43,7 @@ const networkProjects: Project[] = [
     description:
       "Scalable campus-wide network supporting thousands of users across multiple buildings with inter-VLAN routing and centralized DNS/DHCP.",
     tags: ["Scalability", "DNS", "Switching", "Design"],
+    image: campusImg,
     links: [
       { label: "GitHub", href: "https://github.com/feynet1/Campus-Network-Design", icon: "github" },
     ],
@@ -160,6 +163,17 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
         />
       )}
     </div>
+
+    {/* Project image */}
+    {project.image && (
+      <div className="w-full rounded-lg overflow-hidden mb-4 border border-border">
+        <img
+          src={project.image}
+          alt={`${project.title} topology`}
+          className="w-full h-40 object-cover object-top"
+        />
+      </div>
+    )}
 
     <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
       {project.description}
