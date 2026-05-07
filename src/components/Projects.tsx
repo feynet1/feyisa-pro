@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { ExternalLink, Lock, FileText, Network, Github, Globe } from "lucide-react";
+import { ExternalLink, Lock, FileText, Network, Github, Globe, X, ZoomIn } from "lucide-react";
 import campusImg from "./network-project-image/campus-network-design.png";
 
 interface ProjectLink {
@@ -16,6 +16,7 @@ interface Project {
   status?: "live" | "upcoming";
   links?: ProjectLink[];
   image?: string;
+  topologyImage?: string;
 }
 
 // ── Network Projects ──────────────────────────────────────────────────────────
@@ -44,6 +45,7 @@ const networkProjects: Project[] = [
       "Scalable campus-wide network supporting thousands of users across multiple buildings with inter-VLAN routing and centralized DNS/DHCP.",
     tags: ["Scalability", "DNS", "Switching", "Design"],
     image: campusImg,
+    topologyImage: campusImg,
     links: [
       { label: "GitHub", href: "https://github.com/feynet1/Campus-Network-Design", icon: "github" },
     ],
@@ -54,10 +56,6 @@ const networkProjects: Project[] = [
       "Zero-trust enterprise network with advanced firewall policies, IDS/IPS integration, and automated monitoring.",
     tags: ["Zero Trust", "IDS/IPS", "Monitoring", "Automation"],
     status: "upcoming",
-    links: [
-      { label: "Docs", href: "https://github.com/feynet1", icon: "docs" },
-      { label: "Topology", href: "https://github.com/feynet1", icon: "topology" },
-    ],
   },
   {
     title: "Cloud-Native Infrastructure & Automation",
@@ -119,8 +117,71 @@ const linkIcons = {
   live: Globe,
 };
 
+// ── Topology Modal ────────────────────────────────────────────────────────────
+const TopologyModal = ({ image, title, onClose }: { image: string; title: string; onClose: () => void }) => {
+  // Close on Escape key
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="relative max-w-5xl w-full glass-card rounded-2xl border border-primary/30 overflow-hidden"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between px-5 py-3 border-b border-border">
+            <div className="flex items-center gap-2">
+              <Network className="text-primary" size={16} />
+              <span className="font-mono text-sm text-foreground">{title} — Topology</span>
+            </div>
+            <button
+              onClick={onClose}
+              aria-label="Close topology view"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          {/* Image */}
+          <div className="overflow-auto max-h-[80vh] bg-black/20">
+            <img
+              src={image}
+              alt={`${title} network topology`}
+              className="w-full h-auto object-contain"
+            />
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
 // ── Reusable card ─────────────────────────────────────────────────────────────
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => (
+const ProjectCard = ({
+  project,
+  index,
+  onTopologyClick,
+}: {
+  project: Project;
+  index: number;
+  onTopologyClick?: (image: string, title: string) => void;
+}) => (
   <motion.div
     key={project.title}
     initial={{ opacity: 0, y: 30 }}
@@ -164,15 +225,25 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
       )}
     </div>
 
-    {/* Project image */}
+    {/* Project preview image — clickable to open modal */}
     {project.image && (
-      <div className="w-full rounded-lg overflow-hidden mb-4 border border-border">
+      <button
+        onClick={() => onTopologyClick?.(project.image!, project.title)}
+        className="w-full rounded-lg overflow-hidden mb-4 border border-border group relative block"
+        aria-label={`View ${project.title} topology`}
+      >
         <img
           src={project.image}
-          alt={`${project.title} topology`}
-          className="w-full h-40 object-cover object-top"
+          alt={`${project.title} topology preview`}
+          className="w-full h-40 object-cover object-top transition-transform duration-300 group-hover:scale-105"
         />
-      </div>
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-lg">
+          <div className="flex items-center gap-2 text-white text-xs font-mono">
+            <ZoomIn size={16} />
+            View Topology
+          </div>
+        </div>
+      </button>
     )}
 
     <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
@@ -191,39 +262,52 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
       ))}
     </div>
 
-    {/* Links */}
-    {project.links && project.links.length > 0 && (
-      <div className="flex flex-wrap gap-2 pt-3 border-t border-border">
-        {project.links.map((link) => {
-          const Icon = linkIcons[link.icon];
-          return (
-            <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-mono px-3 py-1.5 rounded-md border border-primary/20 text-primary/80 hover:text-primary hover:bg-primary/10 hover:border-primary/40 transition-all duration-200"
-            >
-              <Icon size={13} />
-              {link.label}
-            </a>
-          );
-        })}
-      </div>
-    )}
+    {/* Links + Topology button */}
+    <div className="flex flex-wrap gap-2 pt-3 border-t border-border">
+      {project.links && project.links.map((link) => {
+        const Icon = linkIcons[link.icon];
+        return (
+          <a
+            key={link.label}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-mono px-3 py-1.5 rounded-md border border-primary/20 text-primary/80 hover:text-primary hover:bg-primary/10 hover:border-primary/40 transition-all duration-200"
+          >
+            <Icon size={13} />
+            {link.label}
+          </a>
+        );
+      })}
+
+      {/* Topology button — only shown if topologyImage exists */}
+      {project.topologyImage && (
+        <button
+          onClick={() => onTopologyClick?.(project.topologyImage!, project.title)}
+          className="inline-flex items-center gap-1.5 text-xs font-mono px-3 py-1.5 rounded-md border border-primary/20 text-primary/80 hover:text-primary hover:bg-primary/10 hover:border-primary/40 transition-all duration-200"
+        >
+          <Network size={13} />
+          Topology
+        </button>
+      )}
+    </div>
   </motion.div>
 );
 
 // ── Section ───────────────────────────────────────────────────────────────────
 const Projects = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [modal, setModal] = useState<{ image: string; title: string } | null>(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  const openTopology = (image: string, title: string) => setModal({ image, title });
+  const closeTopology = () => setModal(null);
 
   return (
     <section id="projects" className="py-20 sm:py-28 relative">
@@ -251,7 +335,7 @@ const Projects = () => {
           >
             <span className="text-primary">//</span> Network Projects
           </motion.h3>
-          
+
           {isMobile ? (
             <div className="relative overflow-hidden">
               <motion.div
@@ -262,7 +346,7 @@ const Projects = () => {
               >
                 {networkProjects.map((project, i) => (
                   <div key={project.title} className="min-w-[280px]">
-                    <ProjectCard project={project} index={i} />
+                    <ProjectCard project={project} index={i} onTopologyClick={openTopology} />
                   </div>
                 ))}
               </motion.div>
@@ -273,7 +357,7 @@ const Projects = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {networkProjects.map((project, i) => (
-                <ProjectCard key={project.title} project={project} index={i} />
+                <ProjectCard key={project.title} project={project} index={i} onTopologyClick={openTopology} />
               ))}
             </div>
           )}
@@ -290,7 +374,7 @@ const Projects = () => {
           >
             <span className="text-primary">//</span> Web-Based Projects
           </motion.h3>
-          
+
           {isMobile ? (
             <div className="relative overflow-hidden">
               <motion.div
@@ -301,7 +385,7 @@ const Projects = () => {
               >
                 {webProjects.map((project, i) => (
                   <div key={project.title} className="min-w-[280px]">
-                    <ProjectCard project={project} index={i} />
+                    <ProjectCard project={project} index={i} onTopologyClick={openTopology} />
                   </div>
                 ))}
               </motion.div>
@@ -312,13 +396,22 @@ const Projects = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {webProjects.map((project, i) => (
-                <ProjectCard key={project.title} project={project} index={i} />
+                <ProjectCard key={project.title} project={project} index={i} onTopologyClick={openTopology} />
               ))}
             </div>
           )}
         </div>
 
       </div>
+
+      {/* Topology modal */}
+      {modal && (
+        <TopologyModal
+          image={modal.image}
+          title={modal.title}
+          onClose={closeTopology}
+        />
+      )}
     </section>
   );
 };
