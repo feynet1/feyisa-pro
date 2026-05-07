@@ -180,7 +180,7 @@ const Navbar = () => {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.25 }}
-              className="md:hidden glass border-t border-border overflow-hidden"
+              className="md:hidden glass border-t border-border overflow-hidden z-50"
             >
               <div className="px-4 py-4 space-y-1">
                 {navItems.map((item) => {

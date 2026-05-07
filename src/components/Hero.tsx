@@ -13,7 +13,7 @@ const Hero = () => {
   const reducedMotion = useReducedMotion();
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center network-grid overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center network-grid overflow-hidden" style={{ zIndex: 0 }}>
 
       {/* Floating particles — hidden when user prefers reduced motion */}
       {!reducedMotion &&
@@ -61,20 +61,20 @@ const Hero = () => {
           initial={reducedMotion ? false : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-row flex-wrap gap-2 sm:gap-4 justify-center"
         >
-          <a href="#contact" className="btn-primary-cyber">
+          <a href="#contact" className="btn-primary-cyber text-xs sm:text-sm px-3 py-2 sm:px-5 sm:py-2.5">
             Contact Me
           </a>
-          <a href="#projects" className="btn-secondary-cyber">
+          <a href="#projects" className="btn-secondary-cyber text-xs sm:text-sm px-3 py-2 sm:px-5 sm:py-2.5">
             View Projects
           </a>
           <a
             href="/cv.pdf"
             download="Feyisa_Girma_CV.pdf"
-            className="btn-secondary-cyber inline-flex items-center gap-2"
+            className="btn-secondary-cyber inline-flex items-center gap-1.5 text-xs sm:text-sm px-3 py-2 sm:px-5 sm:py-2.5"
           >
-            <Download size={16} />
+            <Download size={14} />
             Download CV
           </a>
         </motion.div>
