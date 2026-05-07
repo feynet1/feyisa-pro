@@ -43,24 +43,24 @@ const About = () => {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="space-y-4"
           >
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed text-justify">
               I'm <span className="text-foreground font-medium">Feyisa Girma</span>, a 3rd-year
               Information Technology student at{" "}
               <span className="text-foreground font-medium">Haramaya University</span>, passionate
               about building secure, scalable systems — both at the network layer and the application layer.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed text-justify">
               On the networking side, I design and simulate enterprise-grade infrastructures —
               VLANs, routing & switching, firewalls, DHCP/DNS, and high-availability architectures
               for hotels, hospitals, and campuses using Cisco Packet Tracer, GNS3, and EVE-NG.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed text-justify">
               On the development side, I build full-stack web applications using{" "}
               <span className="text-foreground font-medium">React, Node.js, Python, PostgreSQL,
               Supabase, and Firebase</span> — including a live education platform, a library
               management system, and a church administration system.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed text-justify">
               I'm currently working toward my{" "}
               <span className="text-foreground font-medium">CCNA certification</span> and have a
               long-term goal of specialising in{" "}
