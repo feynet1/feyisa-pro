@@ -43,7 +43,7 @@ const networkProjects: Project[] = [
     title: "Campus Network Design",
     description:
       "Scalable campus-wide network supporting thousands of users across multiple buildings with inter-VLAN routing and centralized DNS/DHCP.",
-    tags: ["Scalability", "DNS", "Switching", "Design"],
+    tags: ["Scalability", "DNS", "Switching", "Design", "Routing"],
     image: campusImg,
     topologyImage: campusImg,
     links: [
