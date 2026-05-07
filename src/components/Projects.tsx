@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { ExternalLink, Lock, FileText, Network, Github, Globe } from "lucide-react";
 
 interface ProjectLink {
@@ -204,6 +205,15 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
 // ── Section ───────────────────────────────────────────────────────────────────
 const Projects = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <section id="projects" className="py-20 sm:py-28 relative">
       <div className="container mx-auto px-4">
@@ -230,11 +240,32 @@ const Projects = () => {
           >
             <span className="text-primary">//</span> Network Projects
           </motion.h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {networkProjects.map((project, i) => (
-              <ProjectCard key={project.title} project={project} index={i} />
-            ))}
-          </div>
+          
+          {isMobile ? (
+            <div className="relative overflow-hidden">
+              <motion.div
+                drag="x"
+                dragConstraints={{ left: -(networkProjects.length * 300 - window.innerWidth + 32), right: 0 }}
+                dragElastic={0.1}
+                className="flex gap-6 cursor-grab active:cursor-grabbing pb-4"
+              >
+                {networkProjects.map((project, i) => (
+                  <div key={project.title} className="min-w-[280px]">
+                    <ProjectCard project={project} index={i} />
+                  </div>
+                ))}
+              </motion.div>
+              <div className="text-center mt-2">
+                <span className="text-xs text-muted-foreground font-mono">← Swipe to explore →</span>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {networkProjects.map((project, i) => (
+                <ProjectCard key={project.title} project={project} index={i} />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* ── Web-Based Projects ── */}
@@ -248,11 +279,32 @@ const Projects = () => {
           >
             <span className="text-primary">//</span> Web-Based Projects
           </motion.h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {webProjects.map((project, i) => (
-              <ProjectCard key={project.title} project={project} index={i} />
-            ))}
-          </div>
+          
+          {isMobile ? (
+            <div className="relative overflow-hidden">
+              <motion.div
+                drag="x"
+                dragConstraints={{ left: -(webProjects.length * 300 - window.innerWidth + 32), right: 0 }}
+                dragElastic={0.1}
+                className="flex gap-6 cursor-grab active:cursor-grabbing pb-4"
+              >
+                {webProjects.map((project, i) => (
+                  <div key={project.title} className="min-w-[280px]">
+                    <ProjectCard project={project} index={i} />
+                  </div>
+                ))}
+              </motion.div>
+              <div className="text-center mt-2">
+                <span className="text-xs text-muted-foreground font-mono">← Swipe to explore →</span>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {webProjects.map((project, i) => (
+                <ProjectCard key={project.title} project={project} index={i} />
+              ))}
+            </div>
+          )}
         </div>
 
       </div>
