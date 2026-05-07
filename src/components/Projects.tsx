@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { ExternalLink, Lock, FileText, Network, Github, Globe, X, ZoomIn } from "lucide-react";
 import campusImg from "./network-project-image/campus-network-design.png";
 import eduPlatformImg from "./web-project-image/eduplatfrom.png";
+import libraryImg from "./web-project-image/library.png";
 
 interface ProjectLink {
   label: string;
@@ -88,6 +89,7 @@ const webProjects: Project[] = [
     description:
       "Web-based library system with role-based access for students, teachers, and admins. Supports book cataloguing, borrowing, returns, and overdue tracking.",
     tags: ["React", "Node.js", "PostgreSQL", "RBAC"],
+    image: libraryImg,
     links: [
       { label: "GitHub", href: "https://github.com/feynet1/Library-management-system", icon: "github" },
       { label: "Live Demo", href: "https://library-management-system-nu-five.vercel.app/", icon: "live" },
